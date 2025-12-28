@@ -1,0 +1,9 @@
+- name: Test write access
+  hosts: all
+  become: true
+  tasks:
+    - name: Create Ansible marker file
+      copy:
+        content: "Managed by Ansible\n"
+        dest: "{{ otel_base_dir }}/configs/ANSIBLE_MANAGED"
+        mode: '0644'

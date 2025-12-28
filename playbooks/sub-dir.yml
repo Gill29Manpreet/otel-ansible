@@ -1,0 +1,18 @@
+- name: Verify config and docker-compose directories
+  hosts: all
+  become: true
+  tasks:
+    - name: Check config dir
+      stat:
+        path: "{{ otel_base_dir }}/configs"
+      register: config_dir
+
+    - name: Check docker-compose dir
+      stat:
+        path: "{{ otel_base_dir }}/docker-compose"
+      register: dc_dir
+
+    - debug:
+        msg:
+          - "config exists={{ config_dir.stat.exists }}"
+          - "docker-compose exists={{ dc_dir.stat.exists }}"

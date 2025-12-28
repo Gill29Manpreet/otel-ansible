@@ -1,0 +1,17 @@
+# SSH keys
+*.pem
+*.key
+.id_rsa*
+.id_ed25519*
+
+# Ansible retry files
+*.retry
+
+# Editor junk
+*.swp
+*.bak
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db

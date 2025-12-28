@@ -1,0 +1,12 @@
+- name: Verify existing OTel directories
+  hosts: all
+  become: true
+  tasks:
+    - name: Check base directory exists
+      stat:
+        path: "{{ otel_base_dir }}"
+      register: base_dir
+
+    - name: Show base directory status
+      debug:
+        msg: "Base dir {{ otel_base_dir }} exists={{ base_dir.stat.exists }}"

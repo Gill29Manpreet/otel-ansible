@@ -1,0 +1,6 @@
+- name: Validate connectivity
+  hosts: all
+  become: true
+  tasks:
+    - name: Show uptime
+      command: uptime
