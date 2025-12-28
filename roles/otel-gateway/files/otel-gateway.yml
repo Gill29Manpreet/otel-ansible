@@ -1,0 +1,98 @@
+receivers:
+  hostmetrics:
+    collection_interval: 60s
+    scrapers:
+      cpu: {}
+      memory: {}
+      disk: {}
+      filesystem: {}
+      load: {}
+      network: {}
+      paging: {}
+      processes: {}
+#      system: {}
+
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 5s
+
+  memory_limiter:
+    check_interval: 5s
+    limit_mib: 512
+    spike_limit_mib: 128
+
+  resource:
+    attributes:
+      - action: insert
+        key: service.name
+        value: "otel-gateway"
+      - action: insert
+        key: host.name
+        value: "otel-gateway-host"
+      - action: insert
+        key: host.id
+        value: "otel-gateway-host"
+  resourcedetection:
+    detectors: [system, gcp]
+    override: false
+exporters:
+# 🔹 Splunk Observability
+#  otlphttp/splunk:
+#    endpoint: https://ingest.sg0.signalfx.com/v2/otlp
+#    headers:
+#      X-SF-TOKEN: "LFpIZu-TGRc76mCZozr8zgy"
+
+  # 🔹 Jaeger (local)
+#  otlp/jaeger:
+#    endpoint: jaeger:4317
+#    tls:
+#      insecure: true
+
+  signalfx:
+    access_token: "6txeMjlFrh4nZoYnA52AIg"
+    ingest_url: "https://ingest.sg0.signalfx.com"
+    api_url: "https://api.sg0.signalfx.com"
+    sync_host_metadata: true
+
+#  otlp/splunk:
+#    endpoint: ingest.sg0.signalfx.com:443
+#    headers:
+#     X-SF-TOKEN: "LFpIZu-TGRc76mCZozr8zg"
+
+    sending_queue:
+      enabled: true
+      num_consumers: 4
+      queue_size: 4000
+
+    retry_on_failure:
+      enabled: true
+      initial_interval: 5s
+      max_interval: 30s
+      max_elapsed_time: 300s
+
+  debug:
+    verbosity: basic
+
+service:
+  pipelines:
+    metrics:
+      receivers: [hostmetrics, otlp]
+      processors: [memory_limiter,resourcedetection,resource, batch]
+      exporters: [signalfx,debug]
+
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter,resource, batch]
+      exporters: [debug]
+
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter,batch]
+      exporters: [debug]

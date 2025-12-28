@@ -1,0 +1,7 @@
+- name: Copy otel agent config
+  copy:
+    src: otel-gateway.yml
+    dest: "{{ otel_base_dir }}/configs/otel-gateway/otel-gateway.yml"
+    mode: '0644'
+  notify: restart otel agent
+

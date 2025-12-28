@@ -1,17 +1,5 @@
-- name: Deploy OTel Agent config
+- name: Deploy OTel Agent
   hosts: otel_agents
   become: true
-
-  tasks:
-    - name: Copy agent config
-      copy:
-        src: "{{ playbook_dir }}/../files/agent/otel-collector.yml"
-        dest: "{{ otel_base_dir }}/configs/otel/otel-collector.yml"
-        mode: '0644'
-      notify: restart otel agent
-
-  handlers:
-    - name: restart otel agent
-      command: docker compose restart
-      args:
-        chdir: "{{ otel_base_dir }}/docker-compose/otel-collector"
+  roles:
+    - otel_agent

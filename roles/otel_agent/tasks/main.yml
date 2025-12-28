@@ -1,0 +1,6 @@
+- name: Copy otel agent config
+  copy:
+    src: otel-collector.yml
+    dest: "{{ otel_base_dir }}/configs/otel/otel-collector.yml"
+    mode: '0644'
+  notify: restart otel agent

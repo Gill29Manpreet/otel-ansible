@@ -1,0 +1,7 @@
+otel_root_dir: "{{ otel_base_dir }}"
+otel_dirs:
+  - "{{ otel_root_dir }}"
+  - "{{ otel_root_dir }}/configs"
+  - "{{ otel_root_dir }}/configs/otel"
+  - "{{ otel_root_dir }}/docker-compose"
+  - "{{ otel_root_dir }}/docker-compose/otel-collector"

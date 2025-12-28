@@ -1,0 +1,25 @@
+- name: Prepare base directories (Agents)
+  hosts: otel_agents
+  become: true
+  roles:
+    - base
+    - otel_agent
+
+- name: Prepare base directories (Gateways)
+  hosts: otel_gateways
+  become: true
+  roles:
+    - base
+    - otel-gateway
+- name: Deploy OTel Agent
+  hosts: otel_agents
+  become: true
+  roles:
+    - otel_agent
+
+- name: Deploy OTel Gateway
+  hosts: otel_gateways
+  become: true
+  roles:
+    - otel-gateway
+
