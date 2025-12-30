@@ -3,6 +3,7 @@
   become: true
   roles:
     - base
+    - docker
     - otel_agent
 
 - name: Prepare base directories (Gateways)
@@ -10,7 +11,9 @@
   become: true
   roles:
     - base
+    - docker
     - otel-gateway
+
 - name: Deploy OTel Agent
   hosts: otel_agents
   become: true

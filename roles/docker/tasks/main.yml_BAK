@@ -1,0 +1,32 @@
+- name: Install Docker on Debian/Ubuntu
+  apt:
+    name:
+      - docker.io
+      - docker-compose-plugin
+    state: present
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
+- name: Install Docker on RHEL/Rocky
+  dnf:
+    name:
+      - docker
+      - docker-compose-plugin
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Enable and start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Verify docker is available
+  command: docker --version
+  register: docker_version
+  changed_when: false
+
+- name: Verify docker compose is available
+  command: docker compose version
+  register: docker_compose_version
+  changed_when: false

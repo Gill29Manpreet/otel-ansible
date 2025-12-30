@@ -1,0 +1,27 @@
+- name: Install dnf plugins
+  dnf:
+    name: dnf-plugins-core
+    state: present
+
+- name: Enable CRB repository
+  command: dnf config-manager --set-enabled crb
+  check_mode: no
+
+- name: Add Docker CE repository
+  command: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  check_mode: no
+
+- name: Install Docker Engine
+  dnf:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+    state: present
+
+- name: Enable and start Docker
+  service:
+    name: docker
+    state: started
+    enabled: true
