@@ -1,0 +1,9 @@
+- name: start grafana agent
+  command: docker compose up -d
+  args:
+    chdir: "{{ grafana_base_dir }}/docker-compose"
+
+- name: restart grafana agent
+  command: docker compose restart
+  args:
+    chdir: "{{ grafana_base_dir }}/docker-compose"

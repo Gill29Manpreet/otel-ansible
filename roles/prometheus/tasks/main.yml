@@ -1,0 +1,14 @@
+- name: Copy prometheus config
+  copy:
+    src: prometheus.yml
+    dest: "{{ prom_base_dir }}/configs/prometheus.yml"
+    mode: '0644'
+  notify: restart prom agent
+- name: Copy docker-compose file
+  copy:
+    src: docker-compose.yml
+    dest: "{{ prom_base_dir }}/docker-compose/docker-compose.yml"
+    mode: '0644'
+  notify: 
+    - restart prom agent
+    - start prom agent

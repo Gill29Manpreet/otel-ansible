@@ -1,0 +1,8 @@
+- name: Copy docker-compose file
+  copy:
+    src: docker-compose.yml
+    dest: "{{ grafana_base_dir }}/docker-compose/docker-compose.yml"
+    mode: '0644'
+  notify:
+    - restart grafana agent
+    - start grafana agent

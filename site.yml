@@ -26,3 +26,44 @@
   roles:
     - otel-gateway
 
+- name: Prepare base directories (Prometheus)
+  hosts: prom_agents
+  become: true
+  roles:
+    - base
+    - docker
+    - prometheus
+
+- name: Deploy Prometheus
+  hosts: prom_agents
+  become: true
+  roles:
+    - prometheus
+
+- name: Prepare base directories (Grafana)
+  hosts: grafana_agents
+  become: true
+  roles:
+    - base
+    - docker
+    - grafana
+
+- name: Deploy Grafana
+  hosts: grafana_agents
+  become: true
+  roles:
+    - grafana
+
+- name: Prepare base directories (Splunk)
+  hosts: splunk_agents
+  become: true
+  roles:
+    - base
+    - docker
+    - splunk
+
+- name: Deploy Splunk
+  hosts: splunk_agents
+  become: true
+  roles:
+    - splunk

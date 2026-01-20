@@ -1,7 +1,50 @@
 otel_root_dir: "{{ otel_base_dir }}"
-otel_dirs:
+otel_dirs_collector:
   - "{{ otel_root_dir }}"
   - "{{ otel_root_dir }}/configs"
   - "{{ otel_root_dir }}/configs/otel"
   - "{{ otel_root_dir }}/docker-compose"
   - "{{ otel_root_dir }}/docker-compose/otel-collector"
+
+otel_dirs_gateway:
+  - "{{ otel_root_dir }}"
+  - "{{ otel_root_dir }}/configs"
+  - "{{ otel_root_dir }}/configs/otel-gateway"
+  - "{{ otel_root_dir }}/docker-compose"
+  - "{{ otel_root_dir }}/docker-compose/otel-gateway"
+
+prom_root_dir: "{{ prom_base_dir }}"
+prom_dirs_collector:
+  - "{{ prom_root_dir }}"
+  - "{{ prom_root_dir }}/configs"
+#  - "{{ prom_root_dir }}/configs/prometheus"
+  - "{{ prom_root_dir }}/docker-compose"
+#  - "{{ prom_root_dir }}/docker-compose/prometheus"
+
+grafana_root_dir: "{{ grafana_base_dir }}"
+grafana_dirs_collector:
+  - "{{ grafana_root_dir }}"
+  - "{{ grafana_root_dir }}/docker-compose"
+#  - "{{ grafana_root_dir }}/docker-compose/grafana"
+
+splunk_root_dir: "{{ splunk_base_dir }}"
+splunk_dirs_collector:
+  - "{{ splunk_root_dir }}"
+  - "{{ splunk_root_dir }}/docker-compose"
+#  - "{{ splunk_root_dir }}/docker-compose/splunk"
+
+# Selector (this is the important line)
+#otel_dirs: "{{ otel_dirs_gateway if otel_node_type == 'gateway' elif prom_dirs_collector if node_type  == 'prometheus_collector' else otel_dirs_collector }}"
+
+otel_dirs: >-
+  {{
+    otel_dirs_gateway
+      if node_type == 'otel_gateway'
+      else prom_dirs_collector
+      if node_type == 'prometheus_collector'
+      else grafana_dirs_collector
+      if node_type == 'grafana'
+      else splunk_dirs_collector
+      if node_type == 'splunk'
+      else otel_dirs_collector
+  }}

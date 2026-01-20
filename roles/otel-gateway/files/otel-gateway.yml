@@ -28,7 +28,7 @@ processors:
     limit_mib: 512
     spike_limit_mib: 128
 
-  resource:
+  resource/metrics:
     attributes:
       - action: insert
         key: service.name
@@ -39,6 +39,11 @@ processors:
       - action: insert
         key: host.id
         value: "otel-gateway-host"
+  resource/traces:
+    attributes:
+      - action: insert
+        key: deployment.environment
+        value: "lab"
   resourcedetection:
     detectors: [system, gcp]
     override: false
@@ -56,15 +61,15 @@ exporters:
 #      insecure: true
 
   signalfx:
-    access_token: "6txeMjlFrh4nZoYnA52AIg"
+    access_token: "kod78aTll04E-ATMzlUYoA"
     ingest_url: "https://ingest.sg0.signalfx.com"
     api_url: "https://api.sg0.signalfx.com"
     sync_host_metadata: true
 
-#  otlp/splunk:
-#    endpoint: ingest.sg0.signalfx.com:443
-#    headers:
-#     X-SF-TOKEN: "LFpIZu-TGRc76mCZozr8zg"
+  otlp:
+    endpoint: ingest.sg0.signalfx.com:443
+    headers:
+     X-SF-TOKEN: "kod78aTll04E-ATMzlUYoA"
 
     sending_queue:
       enabled: true
@@ -78,21 +83,22 @@ exporters:
       max_elapsed_time: 300s
 
   debug:
-    verbosity: basic
+    verbosity: detailed
 
 service:
   pipelines:
     metrics:
       receivers: [hostmetrics, otlp]
-      processors: [memory_limiter,resourcedetection,resource, batch]
+      processors: [memory_limiter,resourcedetection,resource/metrics, batch]
       exporters: [signalfx,debug]
 
     traces:
       receivers: [otlp]
-      processors: [memory_limiter,resource, batch]
-      exporters: [debug]
+      processors: [memory_limiter,resource/traces, batch]
+      exporters: [otlp]
 
     logs:
       receivers: [otlp]
       processors: [memory_limiter,batch]
       exporters: [debug]
+
