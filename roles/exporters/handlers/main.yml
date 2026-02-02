@@ -1,0 +1,29 @@
+- name: start blackbox exporters agent
+  command: docker compose -f blackbox_docker-compose.yml up -d
+  args:
+    chdir: "{{ exporters_base_dir }}/docker-compose/blackbox"
+
+- name: restart blackbox exporters agent
+  command: docker compose -f blackbox_docker-compose.yml restart
+  args:
+    chdir: "{{ exporters_base_dir }}/docker-compose/blackbox"
+
+- name: start cadvisor exporters agent
+  command: docker compose -f cadvisor_docker-compose.yml up -d
+  args:
+    chdir: "{{ exporters_base_dir }}/docker-compose/cadvisor"
+
+- name: restart cadvisor exporters agent
+  command: docker compose -f cadvisor_docker-compose.yml restart
+  args:
+    chdir: "{{ exporters_base_dir }}/docker-compose/cadvisor"
+
+- name: start process-exporter exporters agent
+  command: docker compose -f process_exporter_docker-compose.yml up -d
+  args:
+    chdir: "{{ exporters_base_dir }}/docker-compose/process-exporter"
+
+- name: restart process-exporter exporters agent
+  command: docker compose -f process_exporter_docker-compose.yml restart
+  args:
+    chdir: "{{ exporters_base_dir }}/docker-compose/process-exporter"

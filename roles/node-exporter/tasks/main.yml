@@ -1,0 +1,8 @@
+- name: Copy docker-compose file
+  copy:
+    src: docker-compose.yml
+    dest: "{{ node_exporter_base_dir }}/docker-compose/docker-compose.yml"
+    mode: '0644'
+  notify:
+    - restart node_exporter agent
+    - start node_exporter agent

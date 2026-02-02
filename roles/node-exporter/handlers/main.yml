@@ -1,0 +1,9 @@
+- name: start node_exporter agent
+  command: docker compose up -d
+  args:
+    chdir: "{{ node_exporter_base_dir }}/docker-compose"
+
+- name: restart node_exporter agent
+  command: docker compose restart
+  args:
+    chdir: "{{ node_exporter_base_dir }}/docker-compose"

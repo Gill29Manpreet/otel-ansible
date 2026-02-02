@@ -1,0 +1,42 @@
+- name: Copy docker-compose file
+  copy:
+    src: blackbox_docker-compose.yml
+    dest: "{{ exporters_base_dir }}/docker-compose/blackbox/blackbox_docker-compose.yml"
+    mode: '0644'
+  notify:
+    - restart blackbox exporters agent
+    - start blackbox exporters agent
+
+- name: Copy docker-compose file
+  copy:
+    src: cadvisor_docker-compose.yml
+    dest: "{{ exporters_base_dir }}/docker-compose/cadvisor/cadvisor_docker-compose.yml"
+    mode: '0644'
+  notify:
+    - restart cadvisor exporters agent
+    - start cadvisor exporters agent
+
+- name: Copy docker-compose file
+  copy:
+    src: process_exporter_docker-compose.yml
+    dest: "{{ exporters_base_dir }}/docker-compose/process-exporter/process_exporter_docker-compose.yml"
+    mode: '0644'
+  notify:
+    - restart process-exporter exporters agent
+    - start process-exporter exporters agent
+
+- name: Copy blackbox config file
+  copy:
+    src: blackbox.yml
+    dest: "{{ exporters_base_dir }}/configs/blackbox/blackbox.yml"
+    mode: '0644'
+  notify:
+    - restart cadvisor exporters agent
+
+- name: Copy process-exporter config file
+  copy:
+    src: process-exporter.yml
+    dest: "{{ exporters_base_dir }}/configs/process-exporter/process-exporter.yml"
+    mode: '0644'
+  notify:
+    - restart process-exporter exporters agent

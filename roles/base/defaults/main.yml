@@ -33,6 +33,22 @@ splunk_dirs_collector:
   - "{{ splunk_root_dir }}/docker-compose"
 #  - "{{ splunk_root_dir }}/docker-compose/splunk"
 
+node_exporter_root_dir: "{{ node_exporter_base_dir }}"
+node_exporter_dirs_collector:
+  - "{{ node_exporter_root_dir }}"
+  - "{{ node_exporter_root_dir }}/docker-compose"
+
+exporters_root_dir: "{{ exporters_base_dir }}"
+exporters_dirs_collector:
+  - "{{ exporters_root_dir }}"
+  - "{{ exporters_root_dir }}/docker-compose"
+  - "{{ exporters_root_dir }}/docker-compose/blackbox"
+  - "{{ exporters_root_dir }}/docker-compose/cadvisor"
+  - "{{ exporters_root_dir }}/docker-compose/process-exporter"
+  - "{{ exporters_root_dir }}/configs"
+  - "{{ exporters_root_dir }}/configs/blackbox"
+  - "{{ exporters_root_dir }}/configs/process-exporter"
+
 # Selector (this is the important line)
 #otel_dirs: "{{ otel_dirs_gateway if otel_node_type == 'gateway' elif prom_dirs_collector if node_type  == 'prometheus_collector' else otel_dirs_collector }}"
 
@@ -46,5 +62,9 @@ otel_dirs: >-
       if node_type == 'grafana'
       else splunk_dirs_collector
       if node_type == 'splunk'
+      else node_exporter_dirs_collector
+      if node_type == 'node_exporter'
+      else exporters_dirs_collector
+      if node_type == 'exporters'
       else otel_dirs_collector
   }}
