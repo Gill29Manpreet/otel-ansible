@@ -1,12 +1,14 @@
 - name: Copy otel agent config
   copy:
     src: otel-collector.yml
-    dest: "{{ otel_base_dir }}/configs/otel/otel-collector.yml"
+    dest: "{{ otel_base_dir }}/configs/otel-collector.yml"
     mode: '0644'
-  notify: restart otel agent
+      #notify: restart otel agent
 - name: Copy docker-compose file
   copy:
     src: docker-compose.yml
-    dest: "{{ otel_base_dir }}/docker-compose/otel-collector/docker-compose.yml"
+    dest: "{{ otel_base_dir }}/docker-compose/docker-compose.yml"
     mode: '0644'
-  notify: restart otel agent
+  notify: 
+    - start otel agent
+    - restart otel agent

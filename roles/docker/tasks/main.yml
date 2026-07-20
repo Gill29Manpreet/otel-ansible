@@ -19,9 +19,14 @@
       - containerd.io
       - docker-compose-plugin
     state: present
+    use_backend : dnf4
 
 - name: Enable and start Docker
   service:
     name: docker
     state: started
     enabled: true
+
+- name: Add Common Network
+  command: docker network create monitor-net
+  check_mode: no
