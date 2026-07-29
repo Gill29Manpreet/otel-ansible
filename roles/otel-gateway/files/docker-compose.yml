@@ -14,7 +14,7 @@ services:
     container_name: otel-gateway
     command: ["--config=/etc/otel/otel-gateway.yml"]
     volumes:
-      - /opt/otelAgent-gateway-Observability/configs/otel-gateway/otel-gateway.yml:/etc/otel/otel-gateway.yml
+      - /opt/otel/gateway/configs/otel-gateway.yml:/etc/otel/otel-gateway.yml
     ports:
       - "4317:4317"
       - "4318:4318"

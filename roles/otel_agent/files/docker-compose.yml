@@ -4,7 +4,7 @@ services:
     container_name: otel-collector
     command: ["--config=/etc/otel-collector.yml"]
     volumes:
-      - /otelAgent-gateway-Observability/configs/otel/otel-collector.yml:/etc/otel-collector.yml:ro
+      - /opt/otel/collector/configs/otel-collector.yml:/etc/otel-collector.yml:ro
     ports:
       - "8888:8888"   # OTEL internal metrics
     networks:
