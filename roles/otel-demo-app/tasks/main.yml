@@ -1,0 +1,22 @@
+- name: Copy otel demo app Dockerfile
+  copy:
+    src: Dockerfile
+    dest: "{{ otel_demo_app_base_dir }}/Dockerfile"
+    mode: '0644'
+- name: Copy otel demo app app.py
+  copy:
+    src: app.py
+    dest: "{{ otel_demo_app_base_dir }}/app.py"
+    mode: '0644'
+- name: Copy otel demo app requirement file
+  copy:
+    src: requirements.txt
+    dest: "{{ otel_demo_app_base_dir }}/requirements.txt"
+    mode: '0644'
+- name: Copy docker-compose file
+  copy:
+    src: docker-compose.yml
+    dest: "{{ otel_demo_app_base_dir }}/docker-compose.yml"
+    mode: '0644'
+  notify: 
+    - start app agent

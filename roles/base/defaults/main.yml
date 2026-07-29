@@ -9,9 +9,9 @@ otel_dirs_collector:
 otel_dirs_gateway:
   - "{{ otel_root_dir }}"
   - "{{ otel_root_dir }}/configs"
-  - "{{ otel_root_dir }}/configs/otel-gateway"
+    #  - "{{ otel_root_dir }}/configs/otel-gateway"
   - "{{ otel_root_dir }}/docker-compose"
-  - "{{ otel_root_dir }}/docker-compose/otel-gateway"
+    #  - "{{ otel_root_dir }}/docker-compose/otel-gateway"
 
 prom_root_dir: "{{ prom_base_dir }}"
 prom_dirs_collector:
@@ -49,6 +49,21 @@ exporters_dirs_collector:
   - "{{ exporters_root_dir }}/configs/blackbox"
   - "{{ exporters_root_dir }}/configs/process-exporter"
 
+otel_demo_app: "{{ otel_demo_app_base_dir }}"
+otel_demo_app_dirs_collector:
+  - "{{ otel_demo_app_base_dir }}"
+    #- "{{ otel_demo_app_base_dir }}/docker-compose"
+    #  - "{{ otel_demo_app_base_dir }}/Dockerfile"
+    #  - "{{ otel_demo_app_base_dir }}/app_code"
+    #  - "{{ otel_demo_app_base_dir }}/requirements"
+
+otel_demo_app_b: "{{ otel_demo_app_b_base_dir }}"
+otel_demo_app_b_dirs_collector:
+  - "{{ otel_demo_app_b_base_dir }}"
+    #- "{{ otel_demo_app_b_base_dir }}/docker-compose"
+    #  - "{{ otel_demo_app_b_base_dir }}/Dockerfile"
+    #  - "{{ otel_demo_app_b_base_dir }}/app_code"
+    #  - "{{ otel_demo_app_b_base_dir }}/requirements"
 # Selector (this is the important line)
 #otel_dirs: "{{ otel_dirs_gateway if otel_node_type == 'gateway' elif prom_dirs_collector if node_type  == 'prometheus_collector' else otel_dirs_collector }}"
 
@@ -66,5 +81,9 @@ otel_dirs: >-
       if node_type == 'node_exporter'
       else exporters_dirs_collector
       if node_type == 'exporters'
+      else otel_demo_app_dirs_collector
+      if node_type == 'otel_demo_app'
+      else otel_demo_app_b_dirs_collector
+      if node_type == 'otel_demo_app2'
       else otel_dirs_collector
   }}

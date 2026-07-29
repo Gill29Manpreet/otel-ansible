@@ -1,0 +1,96 @@
+receivers:
+  hostmetrics:
+    collection_interval: 60s
+    scrapers:
+      cpu: {}
+      memory: {}
+      disk: {}
+      filesystem: {}
+      load: {}
+      network: {}
+      paging: {}
+      processes: {}
+
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  memory_limiter:
+    check_interval: 5s
+    limit_mib: 512
+    spike_limit_mib: 128
+
+  resourcedetection:
+    detectors: [system, gcp]
+    override: false
+
+  resource/metrics:
+    attributes:
+      - action: insert
+        key: service.name
+        value: otel-gateway
+      - action: insert
+        key: host.name
+        value: otel-gateway-host
+      - action: insert
+        key: host.id
+        value: otel-gateway-host
+
+  resource/traces:
+    attributes:
+      - action: insert
+        key: deployment.environment
+        value: lab
+
+  batch:
+    timeout: 5s
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+
+  otlp/jaeger:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    metrics:
+      receivers: [hostmetrics, otlp]
+      processors:
+        - memory_limiter
+        - resourcedetection
+        - resource/metrics
+        - batch
+      exporters:
+        - prometheus
+        - debug
+
+    traces:
+      receivers: [otlp]
+      processors:
+        - memory_limiter
+        - resourcedetection
+        - resource/traces
+        - batch
+      exporters:
+        - otlp/jaeger
+        - debug
+
+    logs:
+      receivers: [otlp]
+      processors:
+        - memory_limiter
+        - resourcedetection
+        - batch
+      exporters:
+        - debug
+

@@ -4,14 +4,14 @@
   roles:
     - docker
 
-- name: Prepare base directories (Agents)
+- name: Deploy Otel-Collector(Directory Creation+File Upload+Docker Startup)
   hosts: otel_agents
   become: true
   roles:
     - base
     - otel_agent
 
-- name: Prepare base directories (Gateways)
+- name: Deploy Otel-Gateway(Directory Creation+File Upload+Docker Startup)
   hosts: otel_gateways
   become: true
   roles:
@@ -24,73 +24,99 @@
 #  roles:
 #    - otel_agent
 
-- name: Deploy OTel Gateway
-  hosts: otel_gateways
-  become: true
-  roles:
-    - otel-gateway
+#- name: Deploy OTel Gateway
+#hosts: otel_gateways
+# become: true
+#  roles:
+#    - otel-gateway
 
-- name: Prepare base directories (Prometheus)
+- name: Deploy Prometheus(Directory Creation+File Upload+Docker Startup)
   hosts: prom_agents
   become: true
   roles:
     - base
     - prometheus
 
-- name: Deploy Prometheus
-  hosts: prom_agents
-  become: true
-  roles:
-    - prometheus
+#- name: Deploy Prometheus
+#  hosts: prom_agents
+#  become: true
+#  roles:
+#    - prometheus
 
-- name: Prepare base directories (Grafana)
+- name: Deploy Grafana(Directory Creation+File Upload+Docker Startup)
   hosts: grafana_agents
   become: true
   roles:
     - base
     - grafana
 
-- name: Deploy Grafana
-  hosts: grafana_agents
-  become: true
-  roles:
-    - grafana
+#- name: Deploy Grafana
+#  hosts: grafana_agents
+#  become: true
+#  roles:
+#    - grafana
 
-- name: Prepare base directories (Splunk)
+- name: Deploy Splunk(Directory Creation+File Upload+Docker Startup)
   hosts: splunk_agents
   become: true
   roles:
     - base
     - splunk
 
-- name: Deploy Splunk
-  hosts: splunk_agents
-  become: true
-  roles:
-    - splunk
+#- name: Deploy Splunk
+#  hosts: splunk_agents
+#  become: true
+#  roles:
+#    - splunk
 
-- name: Prepare base directories (node-exporter)
+- name: Deploy Node-Exporter(Directory Creation+File Upload+Docker Startup)
   hosts: node_exporter_agents
   become: true
   roles:
     - base
     - node-exporter
 
-- name: Deploy node-exporter
-  hosts: node_exporter_agents
-  become: true
-  roles:
-    - node-exporter
+#- name: Deploy node-exporter
+#  hosts: node_exporter_agents
+#  become: true
+#  roles:
+#    - node-exporter
 
-- name: Prepare base directories (exporters)
+- name: Deploy Exporters(Directory Creation+File Upload+Docker Startup)
   hosts: exporters_agents
   become: true
   roles:
     - base
     - exporters
 
-- name: Deploy exporters
-  hosts: exporters_agents
+#- name: Deploy exporters
+#  hosts: exporters_agents
+#  become: true
+#  roles:
+#    - exporters
+
+- name: Deploy Demo-App(Directory Creation+File Upload+Docker Startup)
+  hosts: otel_demo_app
   become: true
   roles:
-    - exporters
+    - base
+    - otel-demo-app
+
+#- name: Deploy otel-demo-app
+#  hosts: otel_demo_app
+#  become: true
+#  roles:
+#    - otel-demo-app
+
+- name: Deploy Demo-App2(Directory Creation+File Upload+Docker Startup)
+  hosts: otel_demo_app2
+  become: true
+  roles:
+    - base
+    - otel-demo-app2
+
+#- name: Deploy otel-demo-app_b
+#  hosts: otel_demo_app2
+#  become: true
+#  roles:
+#    - otel-demo-app2
